@@ -1,5 +1,5 @@
 /**
- * @author The2b
+ * @author Tom Lenz, Craig Tomassi
  * @date Nov 15, 2015
  * 
  * @purpose Runs a game of TicTacToe.
@@ -25,13 +25,14 @@ public class TicTacToe {
 		Player pNull = new Player(0, " ", false);
 		Player p1 = new Player(1, "X", false);
 		Player p2 = new Player(2, "O", true);
-		// Put the players in an array to make the print func work. Null as a placeholder for the "blank" player
+		// Put the players in an array to make access work. Null as a placeholder for the "blank" player
 		Player players[] =
 		{
 				pNull, p1, p2
 		};
 
 		// NOTE: Write stdout header
+		System.out.print("70-210, Lewis University\nNAME: Tom Lenz, Craig Tomassi\nPROGRAMMING ASSIGNMENT 4\n\n");
 
 		// Welcome
 		System.out.println("Welcome to Tic-Tac-Toe!");
@@ -283,6 +284,11 @@ class Game {
 		// If there's no winner, just leave
 		if (winnerId == 0) {
 			return;
+		}
+		
+		// If there's a draw, say so
+		if (winnerId == -1) {
+			System.out.println("It's a draw!");
 		}
 
 		// If it's a player, print it in the second person
