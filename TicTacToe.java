@@ -189,6 +189,7 @@ class Game {
 	};
 
 	private int turnCount = 0;
+	public boolean playAgain = false;
 
 	/**
 	 * Resets all the values of the game's board, and the turn count. Effectively re-starts the game
@@ -276,8 +277,24 @@ class Game {
 		System.out.println();
 	}
 
-	// NOTE: Does not print a winner. Need to later write a check method and implement it
-	// NOTE: Same for ask again
+	// Print the winner; Not implicit to any method. It is run in the running loop letsPlayAGame()
+	public void printWinner(int winnerId, Player players[]) {
+
+		// If there's no winner, just leave
+		if (winnerId == 0) {
+			return;
+		}
+
+		// If it's a player, print it in the second person
+		if (!players[winnerId].ai) {
+			System.out.println("Player " + (winnerId + 1) + " won! Congratulations!");
+		}
+		// If it's an AI
+		else {
+			System.out.println("GAME OVER");
+			System.out.println("You lose!");
+		}
+	}
 
 	/**
 	 * Direct and supervise most of the actual work.
@@ -288,14 +305,12 @@ class Game {
 		int winner = 0;
 		printBoard(players);
 		do {
-			players[1].makeTurn(this);
+			players[(turnCount % 2) + 1].makeTurn(this);
 			turnCount++;
 			printBoard(players);
 			winner = checkWin();
-			players[2].makeTurn(this);
-			turnCount++;
-			printBoard(players);
-			winner = checkWin();
+			printWinner(winner, players);
+
 		} while (winner == 0);
 	}
 
