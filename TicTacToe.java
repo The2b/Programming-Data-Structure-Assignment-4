@@ -128,25 +128,37 @@ class Player {
 			} while (!isValid);
 			// The random values should be valid by this point, so we can set it
 			game.board[yCoord][xCoord] = playerId;
-			System.out.println("The Computer Chose: " + (xCoord  + 1) + ", " + (yCoord + 1)); // Add +1 to display since board starts at 1, but rng starts at 0
+			System.out.println("The Computer Chose: " + (xCoord + 1) + ", " + (yCoord + 1)); // Add +1 to display since board starts at
+																								// 1, but rng starts at 0
 		}
 		else { // If it's not, we need to ask the player where they want to go
 			do {
-				System.out.print("Choose your spot (X,Y): ");
-				// Take the raw string, split & cook it, then parse it
-				String input = in.nextLine();
-				String[] rawSplit = input.split(",");
+				try { // Drop a try in case someone puts in too large of a value
+					System.out.print("Choose your spot (X,Y): ");
+					// Take the raw string, split & cook it, then parse it
+					String input = in.nextLine();
+					String[] rawSplit = input.split(",");
 
-				xCoord = Integer.parseInt(rawSplit[0].trim());
-				yCoord = Integer.parseInt(rawSplit[1].trim());
+					xCoord = Integer.parseInt(rawSplit[0].trim());
+					yCoord = Integer.parseInt(rawSplit[1].trim());
 
-				// Check the values. If they are valid, set it. If not, complain and try again
-				if (checkSpot(xCoord - 1, yCoord - 1, game)) {
-					isValid = true;
-					game.board[yCoord - 1][xCoord - 1] = playerId;
+					// Check the values. If they are valid, set it. If not, complain and try again
+					if (checkSpot(xCoord - 1, yCoord - 1, game)) {
+						isValid = true;
+						game.board[yCoord - 1][xCoord - 1] = playerId;
+					}
+					else {
+						System.out.println("Error! That spot is taken!");
+					}
 				}
-				else {
-					System.out.println("Error! That spot is taken!");
+				catch (ArrayIndexOutOfBoundsException ob) { // either this, or non-int input
+					System.out.println("Error! One of your coordinates are not between 1 and 3!");
+					// Try again, don't break
+					isValid = false;
+				}
+				catch (NumberFormatException form) { // If the value entered, once formatted, is not an int
+					System.out.println("Error! You must use an integer value between 1 and 3 as coordinates");
+					isValid = false;
 				}
 			} while (!isValid);
 		}
